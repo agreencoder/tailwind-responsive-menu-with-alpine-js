@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="app.js"></script>
+
+  <style>
+    /* custom non-Tailwind CSS */
+
+        @media (max-width: 576px) {
+            .content {
+                padding-top: 51px;
+            }
+        }
+
+        @media (min-width: 577px) {
+          .pt-scroll {
+            padding-top: 51px;
+          }
+
+          .nav-sticky {
+            position: fixed!important;
+            min-width: 100%;
+            top: 0;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+            transition: all .25s ease-in;
+            z-index: 1;
+          }
+        }
+
+        /* HAMBURGER MENU */
+
+        .hamburger {
+          cursor: pointer;
+          width: 48px;
+          height: 48px;
+          transition: all 0.25s;
+        }
+
+        .hamburger__top-bun,
+        .hamburger__bottom-bun {
+          content: '';
+          position: absolute;
+          width: 24px;
+          height: 2px;
+          background: #000;
+          transform: rotate(0);
+          transition: all 0.5s;
+        }
+
+        .hamburger:hover [class*="-bun"] {
+          background: #333;
+        }
+
+        .hamburger__top-bun {
+          transform: translateY(-5px);
+        }
+
+        .hamburger__bottom-bun {
+          transform: translateY(3px);
+        }
+
+        .open {
+          transform: rotate(90deg);
+          transform: translateY(-1px);
+        }
+
+        .open .hamburger__top-bun {
+          transform:
+            rotate(45deg)
+            translateY(0px);
+        }
+
+        .open .hamburger__bottom-bun {
+          transform:
+            rotate(-45deg)
+            translateY(0px);
+        }
+</style>
+
+
+</head>
+<body>
+
+  <!-- <header id="top" class="w-full flex flex-col fixed sm:relative bg-white pin-t pin-r pin-l">
+    <nav id="site-menu" class="flex flex-col sm:flex-row w-full justify-between items-center px-4 sm:px-6 py-1 bg-white shadow sm:shadow-none border-t-4 border-red-900">
+      <div class="w-full sm:w-auto self-start sm:self-center flex flex-row sm:flex-none flex-no-wrap justify-between items-center">
+        <a href="#" class="no-underline py-1"><h1 class="font-bold text-lg tracking-widest">LOGO</h1></a>
+        <button id="menuBtn" class="hamburger block sm:hidden focus:outline-none" type="button" onclick="navToggle();">
+          <span class="hamburger__top-bun"></span><span class="hamburger__bottom-bun"></span>
+        </button>
+      </div>
+      <div id="menu" class="w-full sm:w-auto self-end sm:self-center sm:flex flex-col sm:flex-row items-center h-full py-1 pb-4 sm:py-0 sm:pb-0 hidden">
+        <a class="text-dark font-bold hover:text-red text-lg w-full no-underline sm:w-auto sm:pr-4 py-2 sm:py-1 sm:pt-2" href="" target="_blank">About</a>
+        <a class="text-dark font-bold hover:text-red text-lg w-full no-underline sm:w-auto sm:px-4 py-2 sm:py-1 sm:pt-2" href="">Features</a>
+      </div>
+    </nav>
+  </header> -->
+<script>
+    var nav = document.getElementById('site-menu');
+    var header = document.getElementById('top');
+
+    window.addEventListener('scroll', function() {
+      if (window.scrollY >=400) { // adjust this value based on site structure and header image height
+        nav.classList.add('nav-sticky');
+        header.classList.add('pt-scroll');
+      } else {
+        nav.classList.remove('nav-sticky');
+        header.classList.remove('pt-scroll');
+      }
+    });
+
+    function navToggle() {
+            var btn = document.getElementById('menuBtn');
+            var nav = document.getElementById('menu');
+
+            btn.classList.toggle('open');
+            nav.classList.toggle('flex');
+            nav.classList.toggle('hidden');
+        }
+</script>
+
+  <header>
+
+
+
+    <div class="bg-yellow-100">
+      <p class="text-center text-xl py-3">This is Multilevel Menu With Click Function</p>
+    </div>
+
+    <div class="bg-indigo-600">
+      <div class="container mx-auto ">
+        <nav class="flex justify-between items-center h-14 px-6 position: relative" 
+        x-data="dropdown"
+        >
+          <div class="font-extrabold text-3xl text-white">Logo</div>
+
+          <div class="block md:hidden text-white text-2xl" id="menu-button"  
+            @click="toggle"
+            >
+            <i x-bind:class="open ? 'fa-close' : 'fa-bars'" class="fa" ></i>
+          </div>
+
+            <!-- Menu For Desktop Version -->
+            <ul class="hidden md:flex items-center gap-4 my-auto text-white">
+              <li x-data="dropdown">
+                <a href="#" @click="toggle">Menu 1 <i x-bind:class="open ? 'fa-angle-down' : 'fa-angle-up'" class="fa" aria-hidden="true"></i></a>
+                <ul class="absolute bg-white text-slate-900 rounded-b-lg border border-slate-400 mt-4 divide-y" x-show="open"  @click.outside="open = false">
+                    <li class="p-3 hover:bg-slate-200"><a href="#">Sub Menu 1</a></li>
+                    <li class="p-3 hover:bg-slate-200"><a href="#">Sub Menu 2</a></li>
+                    <li class="p-3 hover:bg-slate-200" x-data="dropdown">
+                        <a class="relative" href="#" @click="toggle">Sub Menu 3 <i x-bind:class="open ? 'fa-angle-left' : 'fa-angle-right'" class="fa" aria-hidden="true"></i></a>
+                        <ul class="absolute bg-blue-600 w-36 left-full divide-y text-white rounded-r-lg" @click.outside="open = false" x-show="open" x-transition>
+                            <li class="p-2"><a href="#">End Menu 1</a></li>
+                            <li class="p-2"><a href="#">End Menu 2</a></li>
+                            <li class="p-2"><a href="#">End Menu 3</a></li>
+                        </ul>
+                    </li>
+                    <li class="p-3 hover:bg-slate-200" x-data="dropdown">
+                      <a class="relative" href="#" @click="toggle">Sub Menu 4 <i x-bind:class="open ? 'fa-angle-left' : 'fa-angle-right'" class="fa" aria-hidden="true"></i></a>
+                      <ul class="absolute bg-blue-600 w-36 left-full divide-y text-white rounded-r-lg" x-show="open" @click.outside="open = false" x-transition>
+                        <li class="p-2"><a href="#">End Menu 4</a></li>
+                        <li class="p-2"><a href="#">End Menu 5</a></li>
+                        <li class="p-2"><a href="#">End Menu 6</a></li>
+                      </ul>
+                    </li>
+                    <li class="p-3 hover:bg-slate-200" x-data="dropdown"><a href="#">Sub Menu 5</a></li>
+                </ul>
+              </li>
+              <li class="antialiased"><a href="#">Menu 2</a></li>
+              <li><a href="#">Menu 3</a></li>
+              <li><a href="#">Menu 4</a></li>
+            </ul>
+          
+            <!-- Menu For Mobile View -->
+            <div class="fixed overflow-y-auto h-full w-5/6 top-28 right-0 bg-white" id="menu-item" x-show="open" 
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 scale-90"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-90">
+              <ul class="divide-y flex flex-col items-center gap-4 my-auto text-black h-full w-full bg-white text-xl font-semibold">
+                <li class="p-4 w-full" x-data="dropdown">
+                  <a href="#" @click="toggle">Menu 1 <i x-bind:class="open ? 'fa-angle-down' : 'fa-angle-up'" class="fa" aria-hidden="true"></i></a>
+                  <ul class=" bg-white text-slate-900 rounded-b-lg border border-slate-400 mt-4 divide-y w-full" x-show="open"  @click.outside="open = false">
+                      <li class="p-3 hover:bg-slate-200"><a href="#">Sub Menu 1</a></li>
+                      <li class="p-3 hover:bg-slate-200"><a href="#">Sub Menu 2</a></li>
+                      <li class="p-3 hover:bg-slate-200" x-data="dropdown">
+                          <a class="relative" href="#" @click="toggle">Sub Menu 3 <i x-bind:class="open ? 'fa-angle-left' : 'fa-angle-right'" class="fa" aria-hidden="true"></i></a>
+                          <ul class="w-36 left-full divide-y text-blak rounded-r-lg" @click.outside="open = false" x-show="open" x-transition>
+                              <li class="p-2"><a href="#">End Menu 1</a></li>
+                              <li class="p-2"><a href="#">End Menu 2</a></li>
+                              <li class="p-2"><a href="#">End Menu 3</a></li>
+                          </ul>
+                      </li>
+                      <li class="p-3 hover:bg-slate-200" x-data="dropdown">
+                        <a class="relative" href="#" @click="toggle">Sub Menu 4 <i x-bind:class="open ? 'fa-angle-left' : 'fa-angle-right'" class="fa" aria-hidden="true"></i></a>
+                        <ul class="w-36 left-full divide-y text-black rounded-r-lg" x-show="open" @click.outside="open = false" x-transition>
+                          <li class="p-2"><a href="#">End Menu 4</a></li>
+                          <li class="p-2"><a href="#">End Menu 5</a></li>
+                          <li class="p-2"><a href="#">End Menu 6</a></li>
+                        </ul>
+                      </li>
+                      <li class="p-3 hover:bg-slate-200" x-data="dropdown"><a href="#">Sub Menu 5</a></li>
+                  </ul>
+                </li>
+                <li class="p-4 antialiased w-full"><a href="#">Menu 2</a></li>
+                <li class="p-4 w-full"><a href="#">Menu 3</a></li>
+                <li class="p-4 w-full"><a href="#">Menu 4</a></li>
+                <li class="p-4 w-full"><a href="#">Menu 5</a></li>
+                <li class="p-4 w-full"><a href="#">Menu 6</a></li>
+                <li class="p-4 w-full"><a href="#">Menu 7</a></li>
+                
+              </ul>
+            </div>
+          
+            
+
+        </nav>
+      </div>
+    </div> 
+     <div class="bg-yellow-100 mt-12">
+      <p class="text-center text-xl py-3">This is multilevel Menu With Hover Function</p>
+    </div>
+
+    <div class="bg-indigo-600 ">
+      <div class="container mx-auto">
+        <nav class="flex justify-between items-center">
+          <div class="font-extrabold text-3xl text-white">Logo</div>
+          <ul class="flex items-center gap-4 my-auto text-white group/main h-16
+          ">
+            <li class="menu-hover">
+              <a href="#" class="py-6">Menu 1 </a>
+              <ul class="absolute bg-white text-slate-900 rounded-b-lg border border-slate-400 mt-4 divide-y invisible group-hover/main:visible">
+                  <li class="p-3 hover:bg-slate-200"><a href="#">Sub Menu 1</a></li>
+                  <li class="p-3 hover:bg-slate-200"><a href="#">Sub Menu 2</a></li>
+                  <li class="p-3 hover:bg-slate-200 group/depth1" >
+                      <a class="relative menu-hover" href="#">Sub Menu 3</a>
+                      <ul class="absolute bg-blue-600 w-36 left-full divide-y text-white rounded-r-lg invisible group-hover/depth1:visible">
+                          <li class="p-2"><a href="#">End Menu 1</a></li>
+                          <li class="p-2"><a href="#">End Menu 2</a></li>
+                          <li class="p-2"><a href="#">End Menu 3</a></li>
+                      </ul>
+                  </li>
+                  <li class="p-3 hover:bg-slate-200" >
+                    <a class="relative" href="#">Sub Menu 4 </a>
+                    <ul class="absolute bg-blue-600 w-36 left-full divide-y text-white rounded-r-lg invisible">
+                      <li class="p-2"><a href="#">End Menu 4</a></li>
+                      <li class="p-2"><a href="#">End Menu 5</a></li>
+                      <li class="p-2"><a href="#">End Menu 6</a></li>
+                    </ul>
+                  </li>
+                  <li class="p-3 hover:bg-slate-200" ><a href="#">Sub Menu 5</a></li>
+              </ul>
+            </li>
+            <li class="antialiased"><a href="#">Menu 2</a></li>
+            <li><a href="#">Menu 3</a></li>
+            <li><a href="#">Menu 4</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+  <div class="bg-yellow-100 mt-12">
+    <p class="text-center text-xl py-3">This is Side Click Menu</p>
+  </div>
+   <div class="ml-12">
+    <ul class="bg-slate-200 rounded-b-lg border border-slate-600 w-36 text-center font-normal divide-y divide-white">
+      <li class="bg-rose-600 text-white text-2xl py-2">Category</li>
+      <li class="text-lg p-2" x-data="dropdown">
+        <a href="#" @click="toggle">Menu 1 <i x-bind:class="open ? 'fa-minus' : 'fa-plus'" class="fa" aria-hidden="true"></i></a>
+        <ul class="bg-slate-300 divide-y" x-show="open">
+          <li class="p-2">Sub Menu 1</li>
+          <li class="p-2">Sub Menu 2</li>
+          <li class="p-2">Sub Menu 3</li>
+        </ul>
+      </li>
+      <li class="text-lg p-2"><a href="#">Menu 2</a></li>
+      <li class="text-lg p-2"><a href="#">Menu 3</a></li>
+      <li class="text-lg p-2"><a href="#">Menu 4</a></li>
+      <li class="text-lg p-2"><a href="#">Menu 5</a></li>
+
+    </ul>
+   </div>
+
+
+
+
+  
+
+  </header>
+</body>
+
+</html>
